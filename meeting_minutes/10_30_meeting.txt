@@ -1,0 +1,13 @@
+10/30 meeting
+
+What to do in the coming week?
+1. Parallel AES using OpenMP and understand the algo itself
+
+Useful links:
+
+AES On Gpu
+https://github.com/Canhui/AES-ON-GPU
+
+AES On CPU and GPU
+https://github.com/franneck94/CUDA-AES/tree/master
+
