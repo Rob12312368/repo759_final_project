@@ -1,0 +1,9 @@
+11/6 meeting
+
+Which part could be parallelized in the AES algorithm?
+1. parallelize AES operation on each substring
+2. some operation within the same round:
+	1. addRoundKey
+	2. subBytes
+	3. shiftRows
+	4. mixColumns
