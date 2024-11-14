@@ -90,6 +90,7 @@ void mix_cols(uint8_t *state) {
     uint8_t tmp[AES_BLOCK_SIZE];
     memset(tmp, 0, AES_BLOCK_SIZE);
 
+    #pragma omp parallel for collapse(2)
     for (int i = 0; i < AES_BLOCK_LEN; i++) {
         int a[AES_BLOCK_LEN] = {state[0 + AES_BLOCK_LEN * i],
                                 state[1 + AES_BLOCK_LEN * i],
