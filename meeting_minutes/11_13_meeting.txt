@@ -1,0 +1,5 @@
+11/13 meeting
+
+What to complete this week?
+	finish GPU version of AES
+
