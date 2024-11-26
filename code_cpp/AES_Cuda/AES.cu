@@ -1,6 +1,7 @@
-#include "AES.h"
+#include "AES.cuh"
 #include <iostream>
 #include <fstream>
+#include <string>
 __constant__ unsigned char s_box[256] = {
 0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
 0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
@@ -206,7 +207,7 @@ __device__ void AES::Encrypt(unsigned char* message, unsigned char* key){
         message[i] = state[i];
 
 }
-unsigned char* readFile(){
+__host__ unsigned char* readFile(){
     std::ifstream file("example.txt");
 
     // Check if the file opened successfully
@@ -232,7 +233,7 @@ unsigned char* readFile(){
     return buffer;
 }
 
-void printHex(unsigned char x){
+__host__ void printHex(unsigned char x){
     if(x/16 < 10) std::cout << (char)(x/16 + '0');
     if(x/16 >= 10) std::cout << (char)(x/16-10 + 'A');
 
@@ -242,16 +243,15 @@ void printHex(unsigned char x){
 }
 __host__ void AES_CUDA(unsigned char* message, unsigned char* key, int n){
     int blocks = 1;
-    if (n > 1024 * 16)
+    if (n > 1024 * 16) //assuming each block can have 1024 threads, and each thread is responsible for 16 bytes
         blocks = n / (1024 * 16);
     AES_Kernel<<<blocks, 1024>>>(message, key, n);
+    cudaDeviceSynchronize();
 }
 __global__ void AES_Kernel(unsigned char* message, unsigned char* key, int n){
 
-    int index = blockIdx.x * blockDimx.x + threadIdx.x;
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
     if(index * 16 < n){
         AES::Encrypt(message + index * 16,key);
     }
-
-    
 }

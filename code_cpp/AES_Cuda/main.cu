@@ -4,7 +4,7 @@
 #include <ctime>   
 #include <chrono>
 #include <fstream>
-#include "AES.h"
+#include "AES.cuh"
 #include <cuda.h>
 
 
@@ -28,18 +28,16 @@ int main(){
             paddedMessage[i] = message[i];
     }
 
-    cudaMalloc((void**)d_key, 16);
-    cudaMalloc((void**)d_paddedMessage, lenOfPaddingMessage);
+    cudaMalloc((void**)&d_key, 16);
+    cudaMalloc((void**)&d_paddedMessage, lenOfPaddingMessage);
 
 
     cudaMemcpy(d_key, key, 16, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_paddedMessage, paddedMessage, 16, cudaMemcpyHostToDevice);
-
-    
+    cudaMemcpy(d_paddedMessage, paddedMessage, lenOfPaddingMessage, cudaMemcpyHostToDevice);
 
     AES_CUDA(d_paddedMessage, d_key, lenOfPaddingMessage);
 
-
+    cudaMemcpy(paddedMessage, d_paddedMessage, lenOfPaddingMessage, cudaMemcpyDeviceToHost);
     for(int i=0; i < lenOfPaddingMessage; i++){
         printHex(paddedMessage[i]);
         std::cout << " ";
