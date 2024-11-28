@@ -26,11 +26,10 @@ open: $(SRC) $(HEADER)
 	$(CC) $(OPEN_FLAGS) -o open $(SRC)
 
 run_aes: aes
-	./aes
-
+	sbatch slurm.sh aes
 
 run_open: open
-	./open
+	sbatch slurm.sh open
 
 clean:
 	rm -f aes open
