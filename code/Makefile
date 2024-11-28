@@ -9,10 +9,8 @@
 
 # .PHONY: all open clean
 
-
-
-SRC = src/aes.c src/main.c test/test.c
-HEADER = src/aes.h test/test.h
+SRC = src/AES.c src/main.c test/test.c
+HEADER = src/AES.h test/test.h
 CC = gcc
 AES_FLAGS = -Itest -Isrc
 OPEN_FLAGS = -Itest -Isrc -fopenmp

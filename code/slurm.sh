@@ -6,11 +6,9 @@
 
 PROGRAM=$1
 
-if [ "$PROGRAM" == "aes" ]; then
-    echo "Running aes program"
+if [ $PROGRAM = aes ]; then
     ./aes
-elif [ "$PROGRAM" == "open" ]; then
-    echo "Running open program"
+elif [ $PROGRAM = open ]; then
     ./open
 else
     echo "Unknown program specified: $PROGRAM"
