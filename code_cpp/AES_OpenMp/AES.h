@@ -15,7 +15,7 @@ class AES{
         void SubBytes(unsigned char* state);
         void SubBytes_Inv(unsigned char* state);
         void ShiftRows(unsigned char* state);
-        void ShiftRows_Inv(unsigned char* state)
+        void ShiftRows_Inv(unsigned char* state);
         void MixColumns(unsigned char* state);
         void MixColumns_Inv(unsigned char* state);
         void AddRoundKey(unsigned char* state, unsigned char* roundKey);

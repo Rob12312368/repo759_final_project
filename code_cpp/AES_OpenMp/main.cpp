@@ -46,6 +46,19 @@ int main(){
         std::cout << " ";
     }
 
+
+    #pragma omp parallel for schedule(static)
+    for(int i = 0; i < lenOfPaddingMessage; i+=16)
+        aes.Decrypt(paddedMessage+i, key);
+    end = high_resolution_clock::now();
+    duration_sec = std::chrono::duration_cast<duration<double, std::milli> >(end - start);
+    std::cout << "time: " << duration_sec.count() << "ms\n";
+
+    for(int i=0; i < lenOfPaddingMessage; i++){
+        std::cout << paddedMessage[i];
+        std::cout << " ";
+    }
+
     delete [] paddedMessage;
 
     
