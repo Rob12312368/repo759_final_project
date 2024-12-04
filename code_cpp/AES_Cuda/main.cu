@@ -49,12 +49,12 @@ int main(int argc, char* argv[]){
     cudaEventElapsedTime(&elapsedTime, startEvent, stopEvent);
 
     cudaMemcpy(paddedMessage, d_paddedMessage, lenOfPaddingMessage, cudaMemcpyDeviceToHost);
-    std::cout << "time: " << elapsedTime;
+    std::cout << "time: " << elapsedTime << "\n";
     for(int i=0; i < lenOfPaddingMessage; i++){
         printHex(paddedMessage[i]);
         std::cout << " ";
     }
-
+    std::cout << "\n";
     delete [] paddedMessage;
 
     

@@ -15,7 +15,9 @@ module load gcc/11.3.0
 
 # Compile the CUDA code (replace 'task3_guided.cu' with your .cu file)
 nvcc AES.cu main.cu -Xcompiler -O3 -Xcompiler -Wall -Xptxas -O3 -std c++17 -o aes
-./aes 
+./aes 512
+./aes 256
+./aes 1024
 # Run the compiled CUDA program
 # for (( i=10; i<=29; i++ )); do
 #     n=$((2**i))  # Calculate 2^i
