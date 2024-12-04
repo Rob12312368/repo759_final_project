@@ -241,11 +241,11 @@ __host__ void printHex(unsigned char x){
     if(x%16 >= 10) std::cout << (char)(x%16-10 + 'A');
 
 }
-__host__ void AES_CUDA(unsigned char* message, unsigned char* key, int n){
+__host__ void AES_CUDA(unsigned char* message, unsigned char* key, int n, int thread_num){
     int blocks = 1;
-    if (n > 1024 * 16) //assuming each block can have 1024 threads, and each thread is responsible for 16 bytes
-        blocks = n / (1024 * 16);
-    AES_Kernel<<<blocks, 1024>>>(message, key, n);
+    if (n > thread_num * 16) //assuming each block can have 1024 threads, and each thread is responsible for 16 bytes
+        blocks = n / (thread_num  * 16);
+    AES_Kernel<<<blocks, thread_num>>>(message, key, n);
     cudaDeviceSynchronize();
 }
 __global__ void AES_Kernel(unsigned char* message, unsigned char* key, int n){

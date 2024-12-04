@@ -6,7 +6,7 @@
 __host__ unsigned char* readFile();
 __host__ void printHex(unsigned char x);
 
-__host__ void AES_CUDA(unsigned char* message, unsigned char* key, int n);
+__host__ void AES_CUDA(unsigned char* message, unsigned char* key, int n, int thread_num);
 __global__ void AES_Kernel(unsigned char* message, unsigned char* key, int n);
 
 class AES {

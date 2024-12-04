@@ -8,11 +8,17 @@
 #include <cuda.h>
 
 
-int main(){
+int main(int argc, char* argv[]){
+    int thread_num = std::stoi(argv[1]);
+
     unsigned char* message = readFile();
     unsigned char key[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
     unsigned char* d_key;
 
+
+    cudaEvent_t startEvent, stopEvent;
+    cudaEventCreate(&startEvent);
+    cudaEventCreate(&stopEvent);
 
     int originalLen = strlen((const char*)message);
     int lenOfPaddingMessage = originalLen;
@@ -35,9 +41,15 @@ int main(){
     cudaMemcpy(d_key, key, 16, cudaMemcpyHostToDevice);
     cudaMemcpy(d_paddedMessage, paddedMessage, lenOfPaddingMessage, cudaMemcpyHostToDevice);
 
-    AES_CUDA(d_paddedMessage, d_key, lenOfPaddingMessage);
+    cudaEventRecord(startEvent, 0);
+    AES_CUDA(d_paddedMessage, d_key, lenOfPaddingMessage, thread_num);
+    cudaEventRecord(stopEvent, 0);
+    cudaEventSynchronize(stopEvent);
+    float elapsedTime;
+    cudaEventElapsedTime(&elapsedTime, startEvent, stopEvent);
 
     cudaMemcpy(paddedMessage, d_paddedMessage, lenOfPaddingMessage, cudaMemcpyDeviceToHost);
+    std::cout << "time: " << elapsedTime;
     for(int i=0; i < lenOfPaddingMessage; i++){
         printHex(paddedMessage[i]);
         std::cout << " ";
