@@ -4,11 +4,13 @@
 #include <ctime>   
 #include <chrono>
 #include <fstream>
+#include <omp.h>
 #include "AES.h"
 using std::chrono::high_resolution_clock;
 using std::chrono::duration;
 
-int main(){
+int main(int argc, char* argv[]){
+    int thread_num = std::stoi(argv[1]);
     unsigned char* message = readFile();
     unsigned char key[16] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
 
@@ -29,6 +31,8 @@ int main(){
     }
 
 
+    omp_set_num_threads(thread_num);
+
     high_resolution_clock::time_point start;
     high_resolution_clock::time_point end;
     duration<double, std::milli> duration_sec;
@@ -46,6 +50,7 @@ int main(){
         std::cout << " ";
     }
 
+    std::cout << "\n";
 
     #pragma omp parallel for schedule(static)
     for(int i = 0; i < lenOfPaddingMessage; i+=16)
@@ -56,7 +61,6 @@ int main(){
 
     for(int i=0; i < lenOfPaddingMessage; i++){
         std::cout << paddedMessage[i];
-        std::cout << " ";
     }
 
     delete [] paddedMessage;
